@@ -1,0 +1,98 @@
+<% include partials/header.ejs %>
+<a class="btn btn-primary btn-lg" href="/addImmeuble" title="Ajouter immeuble">Ajouter Immeuble</a>
+</nav>
+    <div class="container">
+        <% if (message != '') { %>
+            <p class="text-center text-danger"><%= message %></p>
+        <% } %>
+        <form class="add-immeuble-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="adresse" id="adresse" placeholder="Adresse" required>
+                </div>                
+                <div class="form-group col-md-4">
+                    <input type="number" min="1000" max="9999" class="form-control" name="code_postal" id="code-postal" placeholder="Code Postal" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="commune" id="commune" placeholder="Commune" required>
+                </div>
+            </div>
+
+
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <select id="type-fin" name="type_fin" class="form-control" required>
+                        <option selected disabled>Type Fin.</option>
+                        <option>Straight Loan</option>
+                        <option>Credit Invest</option>
+                        <option>Prêt</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <select id="type-credit" name="type_credit" class="form-control" required>
+                        <option selected disabled>Type Crédit</option>
+                        <option>VAR 1 ans</option>
+                        <option>VAR 3 ans</option>
+                        <option>VAR 5 ans</option>
+                        <option>Fixe</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="date" class="form-control" name="date_acquis" id="date_acquis" placeholder="Date Acquis" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="date" class="form-control" name="date_vente" id="date_vente" placeholder="Date vente" required>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                    <div class="form-group col-md-12">
+                            <select id="syndicID" name="syndicID" class="form-control">
+                                    <option disabled selected value> -- select an option -- </option>
+                                    <option value="<%null%>">Pas de Syndicat</option>
+                                <% syndics.forEach((syndic, index) => { %>
+                                    <option value="<%=syndic.id%>"><%=syndic.nom%></option>
+                                <% }) %>
+
+                            </select>
+
+                    </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary float-right">Ajouter immeuble</button>
+
+
+        </form>
+    </div>
+</div>
+<script>
+$(document).ready(()=>{
+    $('#code-postal').change(()=>{
+        var code = $('input[name="code_postal"]').val();
+        console.log(code);
+
+        $.ajax({
+        url: 'communes/'+ code,
+        type: 'post',
+        dataType: 'json',
+        success: function(result){
+            $("#commune").val(result.commune);
+        }
+
+    });
+    });
+
+});
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<% include partials/header.ejs %>
+</nav>
+<div class="container">
+    <% if (message) { %>
+        <p class="text-center text-danger"><%= message %></p>
+    <% } %>
+
+    <% if (immeuble) { %>
+        <form class="add-immeuble-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                        <input type="number" min='1' class="form-control" name="id" id="id" value="<%= immeuble.id %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="adresse" id="adresse" placeholder="Adresse" value="<%= immeuble.adresse %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="commune" id="commune" placeholder="Commune" value="<%= immeuble.commune %>" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="number" min="1000" max="9999" step="10" class="form-control" name="code_postal" id="code-postal" placeholder="Code Postal" value="<%= immeuble.code_postal %>" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <select id="type-fin" name="type_fin" class="form-control"  required>
+                        <option selected><%= immeuble.type_fin %></option>
+                        <option>Straight Loan</option>
+                        <option>Credit Invest</option>
+                        <option>Prêt</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <select id="type-credit" name="type_credit" class="form-control" required>
+                        <option selected><%= immeuble.type_credit %></option>
+                        <option>VAR 1 ans</option>
+                        <option>VAR 3 ans</option>
+                        <option>VAR 5 ans</option>
+                        <option>Fixe</option>
+                    </select>
+                </div>
+
+            </div>
+            <div  class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Date D'Achat: <%= immeuble.date_acquis %></label>
+                    <input type="date" class="form-control" name="date_acquis" id="date_acquis" value="<%= immeuble.date_acquis %>" required>
+
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label >Date De Vente: <%= immeuble.date_vente %></label>
+
+                    <input type="date" class="form-control" name="date_vente" id="date_vente" value="<%= immeuble.date_vente %>" required>
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-success float-right">Appliquer modification</button>
+        </form>
+    <% } else { %>
+        <p class="text-center">Immeuble pas Touvé. Appuyez- <a href="/addImmeuble">ici</a> pour ajouter un immeuble.</p>
+    <% } %>
+</div>
+</div>
+</body>
+
+</html>

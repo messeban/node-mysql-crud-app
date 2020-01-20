@@ -1,0 +1,130 @@
+<% include partials/header.ejs %>
+</nav>
+<div class="container">
+    <% if (message) { %>
+        <p class="text-center text-danger"><%= message %></p>
+    <% } %>
+
+    <h2>Immeuble:</h2>
+    <script>
+        $(document).ready(()=>{
+            $('#immeubleCode-Postal').change(()=>{
+    
+                var code = $('input[name="immeubleCode_Postal"]').val();
+        
+                $.ajax({
+                url: 'communes/'+ code,
+                type: 'post',
+                dataType: 'json',
+                success: function(result){
+                    $("#immeubleCommune").val(result.commune);
+                }
+        
+            });
+            });
+        
+        });
+        
+        </script>
+    <form class="add-immeuble-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                        <input type="number" min='1' class="form-control" name="immeubleId" id="immeubleId" value="<%= immeuble ? immeuble.id : '' %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="immeubleAdresse" id="immeubleAdresse" placeholder="Adresse" value="<%= immeuble ? immeuble.adresse : '' %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="immeubleCommune" id="immeubleCommune" placeholder="Commune" value="<%= immeuble ? immeuble.commune : '' %>" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="text" class="form-control" name="immeubleCode_Postal" id="immeubleCode-Postal" placeholder="Code Postal" value="<%= immeuble ? immeuble.code_postal : '' %>" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <select id="type_fin" name="type_fin" class="form-control"  required>
+                        <option selected><%= immeuble ? immeuble.type_fin : '' %></option>
+                        <option>Straight Loan</option>
+                        <option>Credit Invest</option>
+                        <option>Prêt</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <select id="type_credit" name="type_credit" class="form-control" required>
+                        <option selected><%= immeuble ? immeuble.type_credit : '' %></option>
+                        <option>VAR 1 ans</option>
+                        <option>VAR 3 ans</option>
+                        <option>VAR 5 ans</option>
+                        <option>Fixe</option>
+                    </select>
+                </div>
+
+            </div>
+            <div  class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Date D'Achat: <%= immeuble ? immeuble.date_acquis : '' %></label>
+                    <input type="date" class="form-control" name="date_acquis" id="date_acquis" value="<%= immeuble ? immeuble.date_acquis : '' %>" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label >Date De Vente: <%= immeuble ? immeuble.date_vente : '' %></label>
+
+                    <input type="date" class="form-control" name="date_vente" id="date_vente1" value="<%= immeuble ? immeuble.date_vente : '' %>" required>
+                </div>
+
+            </div>
+
+
+    <% if (checkSyndic.syndicID==null) { %>
+        <h2>Syndicat pas Touvé:</h2>
+        <h3>Ajouter un syndicat:</h3>
+        <div class="form-row">
+                <div class="form-group col-md-12">
+                        <select id="syndicID" name="syndicID" class="form-control">
+                                <option value="<%=null%>" selected>Aucun Syndicat</option>
+                            <% syndics.forEach((syndic, index) => { %>
+                                    <option value="<%=syndic.id%>" ><%=syndic.nom%></option>
+                            <% }) %>
+
+                        </select>
+
+                </div>
+        </div>
+        <% } else{%>
+            <h2>Syndicat:</h2>
+            <div class="form-row">
+                    <div class="form-group col-md-12">
+                            <select id="syndicID" name="syndicID" class="form-control">
+                                <% syndics.forEach((syndic, index) => { %>
+                                    <% if (immeuble) { %>
+
+                                    <% if (syndic.id==immeuble.syndicID) { %>
+                                    <option value="<%=syndic.id%>" selected><%=syndic.nom%></option>
+                                    <%} else {%>
+                                        <option value="<%=syndic.id%>" ><%=syndic.nom%></option>
+                                        <%}%>
+                                        <%}%>
+                                <% }) %>
+
+                            </select>
+
+                    </div>
+            </div>
+            <%}%>
+
+
+
+            <button type="button"  class="btn  btn-danger" onclick="window.location.href='/addSyndic/'">Ajouter un nouveau Syndicat</button>
+            <button type="submit" class="btn btn-success float-right">Appliquer modification</button>
+    </form>
+
+
+</div>
+</div>
+
+</body>
+
+</html>
+
+
